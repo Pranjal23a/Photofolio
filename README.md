@@ -1,2 +1,2 @@
 <h1>Photofolio Application</h1>
-This is an photo album project, where we user can create album and add pictures to it.
+This is an online photo album project, where we user can create album and add pictures to it.
