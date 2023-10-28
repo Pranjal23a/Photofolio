@@ -4,7 +4,7 @@
     margin-top: -16px;
     width: 98%;
     height: 60px;
-    background-image: radial-gradient( circle farthest-corner at 10% 20%, rgba(100,43,115,1) 0%, rgb(89 63 123) 90% );
+    background-color: black;
     color:#d6c6e9;
     padding:10px 1%;
     position: sticky;
@@ -26,4 +26,6 @@
     width: 45px;
     margin-right: 5px;
     margin-top: 15px;
+    background-color: white;
+    border-radius: 30%;
 }

@@ -12,7 +12,7 @@ import styles from "./imageList.module.css"
 
 // firestore database
 import { db } from "../../firebaseInit";
-import { doc, updateDoc,arrayRemove, onSnapshot } from "firebase/firestore";
+import { doc, updateDoc, arrayRemove, onSnapshot } from "firebase/firestore";
 
 
 // toast notification
@@ -21,50 +21,50 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 // function to render all the images within any Album
-export default function ImageList(props){
+export default function ImageList(props) {
 
     // variables to store data
-    
+
     // open or close one album
-    const {openAlbum,setOpenAlbum}=props;
+    const { openAlbum, setOpenAlbum } = props;
     // to show or hide add image form
-    const [showImageForm,setShowImageForm]=useState(false);
+    const [showImageForm, setShowImageForm] = useState(false);
     // for updating an image
-    const [updateImage,setUpdateImage]=useState(null);
+    const [updateImage, setUpdateImage] = useState(null);
     // imagelist containing all the images within an album
-    const [imageList,setImageList]=useState([]);
+    const [imageList, setImageList] = useState([]);
     // for searching image within an album
-    const [search,setSearch]=useState('');
+    const [search, setSearch] = useState('');
 
     // for image lightbox
     const [isOpen, setIsOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // to redirect back to album list page
-    function handleBackClick(e){
+    function handleBackClick(e) {
         e.preventDefault();
-        setOpenAlbum({albumId:"",show:false});
+        setOpenAlbum({ albumId: "", show: false });
     }
 
     // get all the images from database 
-    useEffect(()=>{
-        const unsub = onSnapshot(doc(db, "album",openAlbum.albumId), (doc) => {
-            const data=doc.data().imageList;      
+    useEffect(() => {
+        onSnapshot(doc(db, "album", openAlbum.albumId), (doc) => {
+            const data = doc.data().imageList;
             setImageList(data);
         });
-    },[]);
+    }, []);
 
     // deleting an image from list
-    async function handleImageDelete(image){
+    async function handleImageDelete(image) {
         const albumRef = doc(db, 'album', openAlbum.albumId);
-        await updateDoc(albumRef,{
-            imageList:arrayRemove(image)
+        await updateDoc(albumRef, {
+            imageList: arrayRemove(image)
         });
         toast.success("Image Successfully Deleted from your Album!");
     }
 
     // updating any image
-    function handleImageEdit(image){
+    function handleImageEdit(image) {
         setUpdateImage(image);
         setShowImageForm(true);
     }
@@ -80,56 +80,56 @@ export default function ImageList(props){
         setIsOpen(false);
     };
 
-    return(
+    return (
         <>
             <ToastContainer />
             {/* button container */}
             <div className={styles.btnContainer}>
 
                 {/* back button to redirect to album list page */}
-                <button className={`${styles.btn} ${styles.backBtn}`} 
-                        onClick={handleBackClick}>Back
+                <button className={`${styles.btn} ${styles.backBtn}`}
+                    onClick={handleBackClick}>Back
                 </button>
 
                 {/* input box to search image in album */}
-                <input type="text" 
-                        placeholder="Search Image..." 
-                        onChange={(e)=> setSearch(e.target.value)} />
-                
+                <input type="text"
+                    placeholder="Search Image..."
+                    onChange={(e) => setSearch(e.target.value)} />
+
                 {/* Add image / cancel button */}
                 {/* open / hide image form */}
-                <button className={`${styles.btn} ${styles.addBtn}`} 
-                        onClick={()=>setShowImageForm(!showImageForm)}>
-                            {!showImageForm?"Add Image":"Cancel"}
+                <button className={`${styles.btn} ${styles.addBtn}`}
+                    onClick={() => setShowImageForm(!showImageForm)}>
+                    {!showImageForm ? "Add Image" : "Cancel"}
                 </button>
             </div>
 
             {/* image form to add image */}
-            <div style={{textAlign:"center"}}>
-                {showImageForm && <ImageForm albumId={openAlbum.albumId} 
-                                            updateImage={updateImage}
-                                            setUpdateImage={setUpdateImage}
-                                            setShowImageForm={setShowImageForm} />}
+            <div style={{ textAlign: "center" }}>
+                {showImageForm && <ImageForm albumId={openAlbum.albumId}
+                    updateImage={updateImage}
+                    setUpdateImage={setUpdateImage}
+                    setShowImageForm={setShowImageForm} />}
                 {/* collection heading on condition */}
                 {/* if album is empty it will show different heading */}
-                <h1>{imageList.length !== 0 ?"Your Collection":"No Images in Your Collection"}</h1>
+                <h1>{imageList.length !== 0 ? "Your Collection" : "No Images in Your Collection"}</h1>
             </div>
-                
+
             {/* looping over each image in list and showing them within a box */}
             <div className={styles.imageList}>
                 {/* filter function to show search images if user enter something inside search bar */}
                 {imageList.filter((image) => {
                     return search.toLocaleLowerCase() === ''
-                    ? image
-                    :image.name.toLocaleLowerCase().includes(search);
+                        ? image
+                        : image.name.toLocaleLowerCase().includes(search);
                     // map function to map over each image and show them inside a card
-                }).map((image,i) => <Image image={image} 
-                                                key={i}
-                                                index={i}
-                                                handleImageEdit={handleImageEdit} 
-                                                handleImageDelete={handleImageDelete} 
-                                                openLightbox={openLightbox}
-                                                />)}
+                }).map((image, i) => <Image image={image}
+                    key={i}
+                    index={i}
+                    handleImageEdit={handleImageEdit}
+                    handleImageDelete={handleImageDelete}
+                    openLightbox={openLightbox}
+                />)}
             </div>
 
             {/* if user click over an image then light box will get open */}
@@ -154,4 +154,3 @@ export default function ImageList(props){
     )
 }
 
-                    

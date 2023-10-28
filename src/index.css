@@ -5,18 +5,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: radial-gradient( circle 811px at 17.3% 40.2%,  rgba(16,12,37,0.91) 33.4%, rgba(14,1,81,0.85) 90% );
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
   background-attachment:fixed;
 }
 
 /* common style for all the heading tags  */
 h1{
-  color:#649dab;
+  color:black;
   font-family: cursive;
 }
 
 h1:hover{
-  color:#12343b;
+  color: darkcyan;
 }
 
 /* common styles for all the buttons within the page */

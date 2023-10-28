@@ -5,7 +5,7 @@
     width: 200px;
     display: flex;
     flex-direction: column;
-    background-image: linear-gradient( 135deg, #698aa1 10%, #5a6b77 100%);
+    background-color: black;
     padding: 5px;
     border-radius: 5px;
     margin: 10px;
@@ -13,7 +13,7 @@
 }
 
 .imageCard:hover{
-    background-image: linear-gradient( 135deg, #489ad5 10%, #736EFE 100%);
+    background-color: darkblue;
 }
 
 /* image box for showing image */
@@ -59,7 +59,7 @@
 
 /* update button  */
 .editBtn{
-    background-color: #c277e0;
+    background-color: green;
 }
 
 /* showing buttons on hovering */

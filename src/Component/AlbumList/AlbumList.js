@@ -11,31 +11,31 @@ import ImageList from "../ImageList/ImageList"
 
 // firestore database
 import { db } from "../../firebaseInit"
-import { collection, onSnapshot} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 
 // function to show all the album in database and render form to add a new album in list
-export default function AlbumList(){
+export default function AlbumList() {
 
     // variables to store data
     // to store name of all the albums
-    const [albumList,setAlbumList] = useState([]);
-    
+    const [albumList, setAlbumList] = useState([]);
+
     // whether show albumForm or not (by default false)
-    const [showAlbumForm,setShowAlbumForm]=useState(false);
+    const [showAlbumForm, setShowAlbumForm] = useState(false);
 
     // to open any album with some AlbumId (by default false)
-    const [openAlbum,setOpenAlbum]=useState({albumId:"",open:false});
+    const [openAlbum, setOpenAlbum] = useState({ albumId: "", open: false });
 
 
     // get data from Database when the app gets render
-    useEffect(()=>{
+    useEffect(() => {
 
         // getting realtime updates from database
-        const unsub = onSnapshot(collection(db, "album"), (snapShot) => {
+        onSnapshot(collection(db, "album"), (snapShot) => {
             const card = snapShot.docs.map((doc) => {
-                return{
-                    id:doc.id,
+                return {
+                    id: doc.id,
                     ...doc.data()
                 }
             });
@@ -43,16 +43,16 @@ export default function AlbumList(){
             // storing all the albums within local state variable
             setAlbumList(card);
         });
-    },[]);
+    }, []);
 
 
-    return(
+    return (
         <>
             {/* main container */}
             <div className={styles.mainContainer}>
 
                 {/* whether to open any album or not */}
-                {!openAlbum.open?(
+                {!openAlbum.open ? (
 
                     // if there is no album to open then render this
                     <>
@@ -64,25 +64,25 @@ export default function AlbumList(){
                         <div className={styles.header}>
                             <span>Your Albums</span>
                             {/* button to show or hide album form  */}
-                            <button className={styles.btn} 
-                                onClick={()=>setShowAlbumForm(!showAlbumForm)}>
-                                    {!showAlbumForm?"Create Album":"Cancel"
-                            }</button>
+                            <button className={styles.btn}
+                                onClick={() => setShowAlbumForm(!showAlbumForm)}>
+                                {!showAlbumForm ? "Create Album" : "Cancel"
+                                }</button>
                         </div>
 
 
                         <div className={styles.albumContainer}>
                             {/* looping over all the albums in array and showing them one by one */}
-                            {albumList.map((card,i)=> <Album key={i} 
-                                                        info={card} 
-                                                        setOpenAlbum={setOpenAlbum}/>)}
+                            {albumList.map((card, i) => <Album key={i}
+                                info={card}
+                                setOpenAlbum={setOpenAlbum} />)}
                         </div>
-                    
+
                     </>
 
-                // if open album in true then render all the content within the album
-                ):<ImageList openAlbum={openAlbum} 
-                            setOpenAlbum={setOpenAlbum} />}
+                    // if open album in true then render all the content within the album
+                ) : <ImageList openAlbum={openAlbum}
+                    setOpenAlbum={setOpenAlbum} />}
 
             </div>
         </>
